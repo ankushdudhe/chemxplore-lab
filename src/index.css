@@ -1,0 +1,289 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Chemistry Experiment Design System - Purple, Blue, Black Theme */
+
+@layer base {
+  :root {
+    /* Core Chemistry Colors */
+    --background: 240 20% 4%;
+    --foreground: 210 40% 98%;
+
+    --card: 240 15% 8%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 240 15% 10%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Purple Primary */
+    --primary: 270 70% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Blue Secondary */
+    --secondary: 220 80% 55%;
+    --secondary-foreground: 0 0% 100%;
+
+    /* Muted */
+    --muted: 240 15% 15%;
+    --muted-foreground: 215 20% 65%;
+
+    /* Accent - Cyan/Teal */
+    --accent: 190 90% 50%;
+    --accent-foreground: 240 20% 4%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 240 15% 20%;
+    --input: 240 15% 15%;
+    --ring: 270 70% 60%;
+
+    --radius: 0.75rem;
+
+    /* Chemistry-specific colors */
+    --chemistry-purple: 270 70% 60%;
+    --chemistry-purple-glow: 270 80% 70%;
+    --chemistry-blue: 220 80% 55%;
+    --chemistry-blue-glow: 220 90% 65%;
+    --chemistry-cyan: 190 90% 50%;
+    --chemistry-pink: 320 70% 60%;
+    --chemistry-green: 160 70% 50%;
+
+    /* Glassmorphism */
+    --glass-bg: 240 15% 10% / 0.6;
+    --glass-border: 240 15% 30% / 0.3;
+    --glass-shadow: 270 70% 60% / 0.1;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(270 70% 60%), hsl(220 80% 55%));
+    --gradient-secondary: linear-gradient(135deg, hsl(220 80% 55%), hsl(190 90% 50%));
+    --gradient-accent: linear-gradient(135deg, hsl(270 70% 60%), hsl(320 70% 60%));
+    --gradient-dark: linear-gradient(180deg, hsl(240 20% 4%), hsl(240 15% 8%));
+
+    --sidebar-background: 240 15% 6%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 270 70% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 15% 12%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 240 15% 15%;
+    --sidebar-ring: 270 70% 60%;
+  }
+
+  .dark {
+    --background: 240 20% 4%;
+    --foreground: 210 40% 98%;
+    --card: 240 15% 8%;
+    --card-foreground: 210 40% 98%;
+    --popover: 240 15% 10%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 270 70% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 80% 55%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 240 15% 15%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 190 90% 50%;
+    --accent-foreground: 240 20% 4%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 240 15% 20%;
+    --input: 240 15% 15%;
+    --ring: 270 70% 60%;
+    --sidebar-background: 240 15% 6%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 270 70% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 15% 12%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 240 15% 15%;
+    --sidebar-ring: 270 70% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Orbitron', sans-serif;
+  }
+}
+
+@layer components {
+  /* Glassmorphism card */
+  .glass-card {
+    @apply backdrop-blur-xl border rounded-2xl;
+    background: hsl(var(--glass-bg));
+    border-color: hsl(var(--glass-border));
+    box-shadow: 0 8px 32px hsl(var(--glass-shadow));
+  }
+
+  /* Glowing text */
+  .text-glow {
+    text-shadow: 0 0 20px hsl(var(--chemistry-purple-glow)), 
+                 0 0 40px hsl(var(--chemistry-purple-glow) / 0.5);
+  }
+
+  .text-glow-blue {
+    text-shadow: 0 0 20px hsl(var(--chemistry-blue-glow)), 
+                 0 0 40px hsl(var(--chemistry-blue-glow) / 0.5);
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Animated background */
+  .animated-bg {
+    background: linear-gradient(-45deg, 
+      hsl(240 20% 4%), 
+      hsl(270 30% 10%), 
+      hsl(220 30% 8%), 
+      hsl(240 20% 6%));
+    background-size: 400% 400%;
+    animation: gradient-shift 15s ease infinite;
+  }
+
+  /* Floating molecules animation */
+  .molecule-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Pulse glow */
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  /* Chemistry button */
+  .btn-chemistry {
+    @apply relative overflow-hidden font-semibold px-8 py-3 rounded-xl transition-all duration-300;
+    background: var(--gradient-primary);
+    box-shadow: 0 4px 20px hsl(var(--chemistry-purple) / 0.4);
+  }
+
+  .btn-chemistry:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px hsl(var(--chemistry-purple) / 0.6);
+  }
+
+  /* Nav link styling */
+  .nav-link {
+    @apply relative px-4 py-2 text-muted-foreground transition-all duration-300;
+  }
+
+  .nav-link:hover {
+    @apply text-foreground;
+  }
+
+  .nav-link::after {
+    content: '';
+    @apply absolute bottom-0 left-1/2 w-0 h-0.5 transition-all duration-300;
+    transform: translateX(-50%);
+    background: var(--gradient-primary);
+  }
+
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted));
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary));
+  }
+}
+
+@layer utilities {
+  /* Animations */
+  @keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { 
+      opacity: 1; 
+      box-shadow: 0 0 20px hsl(var(--chemistry-purple) / 0.5);
+    }
+    50% { 
+      opacity: 0.8; 
+      box-shadow: 0 0 40px hsl(var(--chemistry-purple) / 0.8);
+    }
+  }
+
+  @keyframes orbit {
+    from { transform: rotate(0deg) translateX(30px) rotate(0deg); }
+    to { transform: rotate(360deg) translateX(30px) rotate(-360deg); }
+  }
+
+  @keyframes fade-in-up {
+    from { 
+      opacity: 0; 
+      transform: translateY(30px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+  }
+
+  @keyframes slide-in-left {
+    from { 
+      opacity: 0; 
+      transform: translateX(-50px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateX(0); 
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.6s ease-out forwards;
+  }
+
+  .animate-slide-in-left {
+    animation: slide-in-left 0.6s ease-out forwards;
+  }
+
+  .animate-orbit {
+    animation: orbit 8s linear infinite;
+  }
+
+  .animation-delay-200 { animation-delay: 0.2s; }
+  .animation-delay-400 { animation-delay: 0.4s; }
+  .animation-delay-600 { animation-delay: 0.6s; }
+  .animation-delay-800 { animation-delay: 0.8s; }
+}
