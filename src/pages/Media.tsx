@@ -69,6 +69,7 @@ const Media = ({ user }: MediaProps) => {
                   controls 
                   className="w-full h-full rounded-xl"
                   controlsList="nodownload"
+                  preload="metadata"
                 >
                   Your browser does not support the video tag.
                 </video>
@@ -111,7 +112,16 @@ const Media = ({ user }: MediaProps) => {
                   whileHover={{ y: -5 }}
                 >
                   <div className="aspect-square bg-gradient-to-br from-chemistry-purple/10 to-chemistry-blue/10 rounded-xl mb-3 flex items-center justify-center relative overflow-hidden">
-                    <img src={image.src} alt={image.title} className="w-full h-full object-cover" />
+                    <img 
+                      src={image.src} 
+                      alt={image.title} 
+                      className="w-full h-full object-cover" 
+                      loading="lazy"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                      }}
+                    />
                     {/* Hover overlay */}
                     <div className="absolute inset-0 bg-chemistry-gradient opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
                   </div>
@@ -141,7 +151,16 @@ const Media = ({ user }: MediaProps) => {
             <div className="glass-card p-6">
               {/* Team group photo */}
               <div className="aspect-[21/9] bg-gradient-to-br from-chemistry-purple/10 to-chemistry-blue/10 rounded-xl mb-6 flex items-center justify-center relative overflow-hidden">
-                <img src="/images/group.jpeg" alt="Chemistry Research Team" className="w-full h-full object-cover" />
+                <img 
+                  src="/images/group.jpeg" 
+                  alt="Chemistry Research Team" 
+                  className="w-full h-full object-cover" 
+                  loading="lazy"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                  }}
+                />
               </div>
 
               {/* Individual team members */}
