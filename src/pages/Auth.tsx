@@ -78,12 +78,6 @@ const Auth = () => {
               description: "Invalid email or password. Please try again.",
               variant: "destructive",
             });
-          } else if (error.message.includes("Email not confirmed")) {
-            toast({
-              title: "Email Not Verified",
-              description: "Please check your email and verify your account first.",
-              variant: "destructive",
-            });
           } else {
             toast({
               title: "Error",
@@ -106,13 +100,9 @@ const Auth = () => {
           return;
         }
 
-        const redirectUrl = `${window.location.origin}/`;
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
-          options: {
-            emailRedirectTo: redirectUrl,
-          },
         });
 
         if (error) {
@@ -132,9 +122,12 @@ const Auth = () => {
         } else {
           toast({
             title: "Account Created!",
-            description: "Please check your email to verify your account.",
+            description: "Welcome! You can now access the chemistry lab.",
           });
-          setIsLogin(true);
+          // User is automatically signed in after signup
+          if (data.user) {
+            navigate("/");
+          }
         }
       }
     } catch (error) {
