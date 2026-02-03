@@ -4,8 +4,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { User, Session } from "@supabase/supabase-js";
 
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
@@ -17,6 +15,10 @@ import FAQ from "./pages/FAQ";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
+
+interface User {
+  email: string;
+}
 
 const ProtectedRoute = ({ 
   children, 
@@ -33,27 +35,22 @@ const ProtectedRoute = ({
 
 const App = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Set up auth state listener first
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        setLoading(false);
+    const checkAuth = () => {
+      const userData = localStorage.getItem('chemlab_user');
+      if (userData) {
+        setUser(JSON.parse(userData));
       }
-    );
-
-    // Then check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
       setLoading(false);
-    });
+    };
 
-    return () => subscription.unsubscribe();
+    checkAuth();
+    
+    // Listen for storage changes (logout from other tabs)
+    window.addEventListener('storage', checkAuth);
+    return () => window.removeEventListener('storage', checkAuth);
   }, []);
 
   if (loading) {
@@ -63,8 +60,6 @@ const App = () => {
       </div>
     );
   }
-
-  const userInfo = user ? { email: user.email || "" } : null;
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -81,7 +76,7 @@ const App = () => {
               path="/" 
               element={
                 <ProtectedRoute user={user}>
-                  <Home user={userInfo} />
+                  <Home user={user} />
                 </ProtectedRoute>
               } 
             />
@@ -89,7 +84,7 @@ const App = () => {
               path="/chemicals" 
               element={
                 <ProtectedRoute user={user}>
-                  <Chemicals user={userInfo} />
+                  <Chemicals user={user} />
                 </ProtectedRoute>
               } 
             />
@@ -97,7 +92,7 @@ const App = () => {
               path="/procedure" 
               element={
                 <ProtectedRoute user={user}>
-                  <Procedure user={userInfo} />
+                  <Procedure user={user} />
                 </ProtectedRoute>
               } 
             />
@@ -105,7 +100,7 @@ const App = () => {
               path="/process" 
               element={
                 <ProtectedRoute user={user}>
-                  <Process user={userInfo} />
+                  <Process user={user} />
                 </ProtectedRoute>
               } 
             />
@@ -113,7 +108,7 @@ const App = () => {
               path="/media" 
               element={
                 <ProtectedRoute user={user}>
-                  <Media user={userInfo} />
+                  <Media user={user} />
                 </ProtectedRoute>
               } 
             />
@@ -121,7 +116,7 @@ const App = () => {
               path="/faq" 
               element={
                 <ProtectedRoute user={user}>
-                  <FAQ user={userInfo} />
+                  <FAQ user={user} />
                 </ProtectedRoute>
               } 
             />

@@ -2,7 +2,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Menu, X, LogOut, Atom } from "lucide-react";
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "./ui/button";
 
 const navItems = [
@@ -23,9 +22,9 @@ const Navigation = ({ user }: NavigationProps) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigate("/auth");
+  const handleLogout = () => {
+    localStorage.removeItem('chemlab_user');
+    window.location.href = "/auth";
   };
 
   return (

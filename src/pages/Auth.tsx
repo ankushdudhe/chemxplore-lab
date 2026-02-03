@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { z } from "zod";
 import { FlaskConical, Mail, Lock, Eye, EyeOff, ArrowRight, Loader2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import { useToast } from "@/hooks/use-toast";
 
@@ -31,19 +30,10 @@ const Auth = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session?.user) {
-        navigate("/");
-      }
-    });
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        navigate("/");
-      }
-    });
-
-    return () => subscription.unsubscribe();
+    const user = localStorage.getItem('chemlab_user');
+    if (user) {
+      navigate("/");
+    }
   }, [navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -66,25 +56,21 @@ const Auth = () => {
           return;
         }
 
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-
-        if (error) {
-          if (error.message.includes("Invalid login credentials")) {
-            toast({
-              title: "Login Failed",
-              description: "Invalid email or password. Please try again.",
-              variant: "destructive",
-            });
-          } else {
-            toast({
-              title: "Error",
-              description: error.message,
-              variant: "destructive",
-            });
-          }
+        // Simple local authentication
+        const users = JSON.parse(localStorage.getItem('chemlab_users') || '{}');
+        if (users[email] && users[email] === password) {
+          localStorage.setItem('chemlab_user', JSON.stringify({ email }));
+          toast({
+            title: "Welcome Back!",
+            description: "Successfully signed in to ChemXplore.",
+          });
+          window.location.href = "/";
+        } else {
+          toast({
+            title: "Login Failed",
+            description: "Invalid email or password. Please try again.",
+            variant: "destructive",
+          });
         }
       } else {
         const result = signupSchema.safeParse({ email, password, confirmPassword });
@@ -100,34 +86,23 @@ const Auth = () => {
           return;
         }
 
-        const { data, error } = await supabase.auth.signUp({
-          email,
-          password,
-        });
-
-        if (error) {
-          if (error.message.includes("already registered")) {
-            toast({
-              title: "Account Exists",
-              description: "An account with this email already exists. Try logging in instead.",
-              variant: "destructive",
-            });
-          } else {
-            toast({
-              title: "Signup Failed",
-              description: error.message,
-              variant: "destructive",
-            });
-          }
+        // Simple local registration
+        const users = JSON.parse(localStorage.getItem('chemlab_users') || '{}');
+        if (users[email]) {
+          toast({
+            title: "Account Exists",
+            description: "An account with this email already exists. Try logging in instead.",
+            variant: "destructive",
+          });
         } else {
+          users[email] = password;
+          localStorage.setItem('chemlab_users', JSON.stringify(users));
+          localStorage.setItem('chemlab_user', JSON.stringify({ email }));
           toast({
             title: "Account Created!",
             description: "Welcome! You can now access the chemistry lab.",
           });
-          // User is automatically signed in after signup
-          if (data.user) {
-            navigate("/");
-          }
+          window.location.href = "/";
         }
       }
     } catch (error) {
