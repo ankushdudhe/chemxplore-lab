@@ -65,7 +65,7 @@ const Media = ({ user }: MediaProps) => {
             <div className="glass-card p-4 overflow-hidden">
               <div className="aspect-video bg-muted rounded-xl flex items-center justify-center relative group cursor-pointer">
                 <video 
-                  src="/images/video.mp4" 
+                  src="/images/finalV.mp4" 
                   controls 
                   className="w-full h-full rounded-xl"
                   controlsList="nodownload"
