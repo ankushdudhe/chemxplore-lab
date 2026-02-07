@@ -10,9 +10,8 @@ interface MediaProps {
 const galleryImages = [
   { id: 1, title: "Heating Process", description: "Paper being heated", src: "/images/heating.jpeg" },
   { id: 2, title: "Invisible Writing", description: "Message written but invisible", src: "/images/writing.jpeg" },
-  { id: 3, title: "Filtered citric acid", description: "Filtered out citric acid", src: "/images/filter.jpeg" },
-  { id: 4, title: "Experiment Process", description: "Chemical reaction in progress", src: "/images/process.jpeg" },
-  { id: 5, title: "Lab Work", description: "Team member conducting experiment", src: "/images/alok.jpeg" },
+  { id: 3, title: "Experiment Process", description: "Chemical reaction in progress", src: "/images/process.jpeg" },
+  { id: 4, title: "Lab Work", description: "Team member conducting experiment", src: "/images/alok.jpeg" },
 ];
 
 
